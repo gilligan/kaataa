@@ -1,0 +1,6 @@
+cradle:
+  cabal:
+    - path: "./src"
+      component: "lib:rover"
+    - path: "./test"
+      component: "rover:test:tests"
