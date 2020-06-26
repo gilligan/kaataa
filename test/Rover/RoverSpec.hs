@@ -56,6 +56,16 @@ spec = do
       it "runs the rover across mars" $ do
         runRover (Rover (Coord 0 0) N) [IMove] `shouldBe` Rover (Coord { x = 0, y = 1}) N
         runRover (Rover (Coord 0 0) N) [ILeft, IMove] `shouldBe` Rover (Coord { x = -1, y = 0}) W
+
+      it "runs the many rovers across mars" $ do
+        runRovers [
+            ((Rover (Coord 0 0) N), [IMove]),
+            ((Rover (Coord 0 0) N), [ILeft, IMove])
+          ] `shouldBe` [
+            (Rover (Coord { x = 0, y = 1}) N),
+            (Rover (Coord { x = -1, y = 0}) W)
+          ]
+
 -- 5 5
 -- 1 2 N
 -- LMLMLMLMM

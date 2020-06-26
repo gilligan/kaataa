@@ -45,8 +45,6 @@ instructionReader = do
     'L' -> ILeft
     'R' -> IRight
 
--- sepBy1 :: ReadP a -> ReadP sep -> ReadP [a]
-
 parseRover :: ReadP Rover
 parseRover = do
   coords <- coordinateReader
@@ -82,3 +80,6 @@ moveRover (Rover c o) IMove = Rover (case o of
 
 runRover :: Rover -> [Instruction] -> Rover
 runRover = foldl moveRover
+
+runRovers :: [(Rover, [Instruction])] -> [Rover]
+runRovers = fmap (uncurry runRover)
