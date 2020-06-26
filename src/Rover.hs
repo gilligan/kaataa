@@ -3,6 +3,7 @@ module Rover where
 import Control.Applicative hiding (many)
 import Text.ParserCombinators.ReadP
 import Data.Char
+import Data.Functor
 
 
 data Orientation = N | S | E | W
@@ -19,58 +20,57 @@ data Rover = Rover Coord Orientation
 
 
 orientationReader :: ReadP Orientation
-orientationReader = do
-  c <- char 'E' <|> char 'N'  <|> char 'S'  <|> char 'W'
-  return $ case c of
-    'E' -> E
-    'N' -> N
-    'S' -> S
-    'W' -> W
+orientationReader =
+  (char 'E' $> E)
+  <|>
+  (char 'N' $> N)
+  <|>
+  (char 'S' $> S)
+  <|>
+  (char 'W' $> W)
 
 coordinateReader :: ReadP Coord
-coordinateReader = do
- x <- number
- space
- y <- number
- return $ Coord (read x) (read y)
+coordinateReader = Coord <$> number <*> (space *> number)
   where
-   number = munch1 isDigit
+   number = read <$> munch1 isDigit
    space = char ' '
 
 instructionReader :: ReadP Instruction
-instructionReader = do
-  c <- char 'M' <|> char 'R'  <|> char 'L'
-  return $ case c of
-    'M' -> IMove
-    'L' -> ILeft
-    'R' -> IRight
+instructionReader =
+  (char 'M' $> IMove)
+  <|>
+  (char 'L' $> ILeft)
+  <|>
+  (char 'R' $> IRight)
 
 parseRover :: ReadP Rover
-parseRover = do
-  coords <- coordinateReader
-  char ' '
-  orientation <- orientationReader
-  return $ Rover coords orientation
+parseRover = Rover <$> coordinateReader <*> (char ' ' *> orientationReader)
 
 parseInstructions :: ReadP [Instruction]
 parseInstructions = many instructionReader
 
 
 parseProblem :: ReadP [(Rover, [Instruction])]
-parseProblem = do
-  _ <- coordinateReader
-  char '\n'
-  many $ (do
-    r <- parseRover
-    char '\n'
-    i <- parseInstructions
-    char '\n'
-    pure (r, i))
-  <* eof
+parseProblem = coordinateReader >> char '\n' >> (many coordAndInstr) <* eof
+ where
+   coordAndInstr = (,) <$> (parseRover <* char '\n') <*> (parseInstructions <* char '\n')
+
+
+rotateLeft :: Orientation -> Orientation
+rotateLeft N = W
+rotateLeft W = S
+rotateLeft S = E
+rotateLeft E = N
+
+rotateRight :: Orientation -> Orientation
+rotateRight N = E
+rotateRight E = S
+rotateRight S = W
+rotateRight W = N
 
 moveRover :: Rover -> Instruction -> Rover
-moveRover (Rover c o) ILeft = Rover c (case o of N -> W; W -> S; S -> E; E -> N)
-moveRover (Rover c o) IRight = Rover c (case o of N -> E; E -> S; S -> W; W -> N)
+moveRover (Rover c o) ILeft = Rover c $ rotateLeft o
+moveRover (Rover c o) IRight = Rover c $ rotateRight o
 moveRover (Rover c o) IMove = Rover (case o of
                                       N -> c { y = y c + 1 }
                                       S -> c { y = y c - 1 }
