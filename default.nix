@@ -13,6 +13,6 @@ in
     rover = drv;
     shell = hsPkgs.shellFor {
       packages = _: [drv];
-      buildInputs = with pkgs; [ cabal-install hlint hsPkgs.ormolu watch-tests ghcid hsPkgs.hspec-discover ];
+      buildInputs = with pkgs; [ cabal-install hlint hsPkgs.ormolu watch-tests ghcid hsPkgs.ghcide hsPkgs.hspec-discover ];
     };
   }
