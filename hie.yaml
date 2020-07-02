@@ -4,3 +4,5 @@ cradle:
       component: "lib:rover"
     - path: "./test"
       component: "rover:test:tests"
+    - path: "./Main.hs"
+      component: "main"
