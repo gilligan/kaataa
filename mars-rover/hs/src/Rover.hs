@@ -1,11 +1,11 @@
 module Rover where
 
 import Control.Applicative hiding (many)
+import Control.Monad
 import Data.Char
 import Data.Functor
-import Text.ParserCombinators.ReadP
 import System.IO
-import Control.Monad
+import Text.ParserCombinators.ReadP
 
 data Orientation = N | S | E | W
   deriving (Show, Eq, Enum)
@@ -16,7 +16,7 @@ data Instruction = IMove | IRight | ILeft
 data Coord = Coord {x :: Int, y :: Int}
   deriving (Show, Eq)
 
-data Rover = Rover { coord :: Coord, orientation :: Orientation }
+data Rover = Rover {coord :: Coord, orientation :: Orientation}
   deriving (Show, Eq)
 
 roverDistance :: Rover -> Rover -> Int
@@ -60,9 +60,10 @@ problemReader = coordinateReader >> char '\n' >> many coordAndInstr <* eof
 
 parseProblem :: String -> Maybe [(Rover, [Instruction])]
 parseProblem s = case x of
-                   [(x, _)] -> Just x
-                   _ -> Nothing
-  where x = readP_to_S problemReader s
+  [(x, _)] -> Just x
+  _ -> Nothing
+  where
+    x = readP_to_S problemReader s
 
 rotateLeft :: Orientation -> Orientation
 rotateLeft N = W
@@ -80,14 +81,17 @@ moveRover :: Rover -> Instruction -> Rover
 moveRover (Rover c o) ILeft = Rover c $ rotateLeft o
 moveRover (Rover c o) IRight = Rover c $ rotateRight o
 moveRover (Rover c o) IMove =
-  Rover
-    ( case o of
-        N -> c {y = y c + 1}
-        S -> c {y = y c - 1}
-        E -> c {x = x c + 1}
-        W -> c {x = x c - 1}
-    )
-    o
+  if c /= Coord 12 45
+    then
+      Rover
+        ( case o of
+            N -> c {y = y c + 1}
+            S -> c {y = y c - 1}
+            E -> c {x = x c + 1}
+            W -> c {x = x c - 1}
+        )
+        o
+    else (Rover c o)
 
 runRover :: Rover -> [Instruction] -> Rover
 runRover = foldl moveRover
