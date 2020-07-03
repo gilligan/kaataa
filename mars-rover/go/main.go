@@ -31,7 +31,7 @@ func rotateLeft(r Rover) Rover {
 	case N:
 		r.orientation = W
 	case S:
-		r.orientation = W
+		r.orientation = E
 	case E:
 		r.orientation = N
 	case W:
@@ -46,7 +46,7 @@ func rotateRight(r Rover) Rover {
 	case N:
 		r.orientation = E
 	case S:
-		r.orientation = E
+		r.orientation = W
 	case E:
 		r.orientation = S
 	case W:
@@ -80,4 +80,11 @@ func execRoverInstruction(r Rover, inst Instruction) (res Rover) {
 		res = rotateRight(r)
 	}
 	return res
+}
+
+func execRoverInstructions(r Rover, insts []Instruction) Rover {
+    for _, inst := range insts {
+        r = execRoverInstruction(r, inst)
+    }
+    return r
 }

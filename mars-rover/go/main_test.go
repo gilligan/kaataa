@@ -24,8 +24,8 @@ func TestRotateRover(t *testing.T) {
 	assert.Equal(t, execRoverInstruction(r, Right).orientation, S, "rotated right")
 
 	r = Rover{0, 0, S}
-	assert.Equal(t, execRoverInstruction(r, Left).orientation, W, "rotated left")
-	assert.Equal(t, execRoverInstruction(r, Right).orientation, E, "rotated right")
+	assert.Equal(t, execRoverInstruction(r, Left).orientation, E, "rotated left")
+	assert.Equal(t, execRoverInstruction(r, Right).orientation, W, "rotated right")
 
 	r = Rover{0, 0, W}
 	assert.Equal(t, execRoverInstruction(r, Left).orientation, S, "rotated left")
@@ -59,8 +59,8 @@ func TestMoveRover(t *testing.T) {
 }
 
 func TestExecuteInstruction(t *testing.T) {
-	instructions := []Instruction{L, L, L, L}
+	instructions := []Instruction{Left, Left, Left, Left}
 	r := Rover{0, 0, N}
 	r2 := execRoverInstructions(r, instructions)
-	assert.Equal(t, r.orientation, N, "went around the clock once")
+	assert.Equal(t, r2.orientation, N, "went around the clock once")
 }
