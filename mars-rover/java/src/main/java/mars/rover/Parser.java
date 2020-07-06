@@ -2,18 +2,18 @@ package mars.rover;
 
 import mars.rover.Rover;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 public class Parser {
 
-    public static Rover.Instruction[] parseInstructions(String s) {
-        ArrayList<Rover.Instruction> res = new ArrayList<Rover.Instruction>();
-        for (char c : s.toCharArray()) {
-            res.add(parseInstruction(Character.toString(c)));
-        }
-        Rover.Instruction[] ourResultActually = new Rover.Instruction[res.size()];
-        res.toArray(ourResultActually);
-        return ourResultActually;
+
+    public static List<Rover.Instruction> parseInstructions(String s) {
+        return Arrays.asList(s.split(""))
+            .stream()
+            .map(x -> parseInstruction(x))
+            .collect(Collectors.toList());
     }
 
     public static Rover.Instruction parseInstruction(String s) {
@@ -60,7 +60,7 @@ public class Parser {
 
         while (lines.length > 1) {
             Rover r = parseRover(lines[1]);
-            Rover.Instruction[] instructions = parseInstructions(lines[2]);
+            List<Rover.Instruction> instructions = parseInstructions(lines[2]);
 
             lines = Arrays.copyOfRange(lines, 2, lines.length);
             r = r.exec(instructions);
