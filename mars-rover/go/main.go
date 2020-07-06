@@ -1,5 +1,11 @@
 package main
 
+import (
+	"fmt"
+    "strings"
+)
+
+
 func main() {
 }
 
@@ -82,9 +88,69 @@ func execRoverInstruction(r Rover, inst Instruction) (res Rover) {
 	return res
 }
 
+func parseOrientation(s string) Orientation {
+    switch s {
+    case "S":
+        return S;
+    case "N":
+        return N;
+    case "E":
+        return E;
+    case "W":
+        return W;
+    }
+    panic("tried to parse invalid orientation");
+}
+
+func parseRover(str string) Rover {
+    var x, y int;
+    var o string;
+
+    _, err := fmt.Sscanf(str, "%d %d %s", &x, &y, &o);
+    if err != nil {
+        panic(err);
+    }
+
+    return Rover {x, y, parseOrientation(o)};
+}
+
+func parseInstruction(s int32) Instruction {
+    switch s {
+    case 'L':
+        return Left;
+    case 'R':
+        return Right;
+    case 'M':
+        return Move;
+    }
+    panic("tried to parse invalid instruction");
+}
+
+func parseInstructions(insts string) []Instruction {
+    var res []Instruction;
+    for _, inst := range insts {
+        res = append(res, parseInstruction(inst));
+    }
+    return res;
+}
+
 func execRoverInstructions(r Rover, insts []Instruction) Rover {
     for _, inst := range insts {
         r = execRoverInstruction(r, inst)
     }
     return r
+}
+
+func runProgram(prog string) (res []Rover) {
+    lines := strings.Split(prog, "\n")[1:]
+
+    for len(lines) > 1 {
+        rover := parseRover(lines[0])
+        instructions := parseInstructions(lines[1])
+        rover = execRoverInstructions(rover, instructions)
+        res = append(res, rover)
+        lines = lines[2:]
+    }
+
+    return
 }
