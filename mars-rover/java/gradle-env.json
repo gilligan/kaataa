@@ -1,0 +1,500 @@
+{
+  "": {
+    "name": "mars-rover",
+    "version": "unspecified",
+    "path": "",
+    "gradle": {
+      "version": "5.6.4",
+      "type": "bin",
+      "url": "https://services.gradle.org/distributions/gradle-5.6.4-bin.zip",
+      "sha256": "1f3067073041bc44554d0efe5d402a33bc3d3c93cc39ab684f308586d732a80d",
+      "nativeVersion": "0.18"
+    },
+    "dependencies": {
+      "plugin": [],
+      "buildscript": [],
+      "project": [
+        {
+          "id": {
+            "group": "com.google.code.findbugs",
+            "name": "jsr305",
+            "version": "3.0.2",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "jsr305-3.0.2.jar",
+          "path": "com/google/code/findbugs/jsr305/3.0.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar"
+          ],
+          "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7"
+        },
+        {
+          "id": {
+            "group": "com.google.code.findbugs",
+            "name": "jsr305",
+            "version": "3.0.2",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "jsr305-3.0.2.pom",
+          "path": "com/google/code/findbugs/jsr305/3.0.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.pom"
+          ],
+          "sha256": "19889dbdf1b254b2601a5ee645b8147a974644882297684c798afe5d63d78dfe"
+        },
+        {
+          "id": {
+            "group": "com.google.errorprone",
+            "name": "error_prone_annotations",
+            "version": "2.3.2",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "error_prone_annotations-2.3.2.jar",
+          "path": "com/google/errorprone/error_prone_annotations/2.3.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2.jar"
+          ],
+          "sha256": "357cd6cfb067c969226c442451502aee13800a24e950fdfde77bcdb4565a668d"
+        },
+        {
+          "id": {
+            "group": "com.google.errorprone",
+            "name": "error_prone_annotations",
+            "version": "2.3.2",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "error_prone_annotations-2.3.2.pom",
+          "path": "com/google/errorprone/error_prone_annotations/2.3.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2.pom"
+          ],
+          "sha256": "8d175561619289a527573cfbdcf872eb5c1216cf9ab692a0ef3dba6d793f63b4"
+        },
+        {
+          "id": {
+            "group": "com.google.errorprone",
+            "name": "error_prone_parent",
+            "version": "2.3.2",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "error_prone_parent-2.3.2.pom",
+          "path": "com/google/errorprone/error_prone_parent/2.3.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/errorprone/error_prone_parent/2.3.2/error_prone_parent-2.3.2.pom"
+          ],
+          "sha256": "8d3b5b9fa211979e9c425e989825c07743d2eb4dc8c20ec61de0f5b3dc1a6333"
+        },
+        {
+          "id": {
+            "group": "com.google.guava",
+            "name": "failureaccess",
+            "version": "1.0.1",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "failureaccess-1.0.1.jar",
+          "path": "com/google/guava/failureaccess/1.0.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar"
+          ],
+          "sha256": "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26"
+        },
+        {
+          "id": {
+            "group": "com.google.guava",
+            "name": "failureaccess",
+            "version": "1.0.1",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "failureaccess-1.0.1.pom",
+          "path": "com/google/guava/failureaccess/1.0.1",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom"
+          ],
+          "sha256": "e96042ce78fecba0da2be964522947c87b40a291b5fd3cd672a434924103c4b9"
+        },
+        {
+          "id": {
+            "group": "com.google.guava",
+            "name": "guava",
+            "version": "28.0-jre",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "guava-28.0-jre.jar",
+          "path": "com/google/guava/guava/28.0-jre",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava/28.0-jre/guava-28.0-jre.jar"
+          ],
+          "sha256": "73e4d6ae5f0e8f9d292a4db83a2479b5468f83d972ac1ff36d6d0b43943b4f91"
+        },
+        {
+          "id": {
+            "group": "com.google.guava",
+            "name": "guava",
+            "version": "28.0-jre",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "guava-28.0-jre.pom",
+          "path": "com/google/guava/guava/28.0-jre",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava/28.0-jre/guava-28.0-jre.pom"
+          ],
+          "sha256": "76881f0598fd750e9b1ca5d32dc5a2a1b57cf340d68c2cea6b1b62fcc788ba4a"
+        },
+        {
+          "id": {
+            "group": "com.google.guava",
+            "name": "guava-parent",
+            "version": "26.0-android",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "guava-parent-26.0-android.pom",
+          "path": "com/google/guava/guava-parent/26.0-android",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava-parent/26.0-android/guava-parent-26.0-android.pom"
+          ],
+          "sha256": "f8698ab46ca996ce889c1afc8ca4f25eb8ac6b034dc898d4583742360016cc04"
+        },
+        {
+          "id": {
+            "group": "com.google.guava",
+            "name": "guava-parent",
+            "version": "28.0-jre",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "guava-parent-28.0-jre.pom",
+          "path": "com/google/guava/guava-parent/28.0-jre",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/guava-parent/28.0-jre/guava-parent-28.0-jre.pom"
+          ],
+          "sha256": "b13b2c4ad555b920754ea392ab7acbeda44e9455919d8c9b9ceed386a2309dbd"
+        },
+        {
+          "id": {
+            "group": "com.google.guava",
+            "name": "listenablefuture",
+            "version": "9999.0-empty-to-avoid-conflict-with-guava",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+          "path": "com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"
+          ],
+          "sha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99"
+        },
+        {
+          "id": {
+            "group": "com.google.guava",
+            "name": "listenablefuture",
+            "version": "9999.0-empty-to-avoid-conflict-with-guava",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom",
+          "path": "com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom"
+          ],
+          "sha256": "18d4b1db26153d4e55079ce1f76bb1fe05cdb862ef9954a88cbcc4ff38b8679b"
+        },
+        {
+          "id": {
+            "group": "com.google.j2objc",
+            "name": "j2objc-annotations",
+            "version": "1.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "j2objc-annotations-1.3.jar",
+          "path": "com/google/j2objc/j2objc-annotations/1.3",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar"
+          ],
+          "sha256": "21af30c92267bd6122c0e0b4d20cccb6641a37eaf956c6540ec471d584e64a7b"
+        },
+        {
+          "id": {
+            "group": "com.google.j2objc",
+            "name": "j2objc-annotations",
+            "version": "1.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "j2objc-annotations-1.3.pom",
+          "path": "com/google/j2objc/j2objc-annotations/1.3",
+          "urls": [
+            "https://jcenter.bintray.com/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.pom"
+          ],
+          "sha256": "5faca824ba115bee458730337dfdb2fcea46ba2fd774d4304edbf30fa6a3f055"
+        },
+        {
+          "id": {
+            "group": "junit",
+            "name": "junit",
+            "version": "4.12",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "junit-4.12.jar",
+          "path": "junit/junit/4.12",
+          "urls": [
+            "https://jcenter.bintray.com/junit/junit/4.12/junit-4.12.jar"
+          ],
+          "sha256": "59721f0805e223d84b90677887d9ff567dc534d7c502ca903c0c2b17f05c116a"
+        },
+        {
+          "id": {
+            "group": "junit",
+            "name": "junit",
+            "version": "4.12",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "junit-4.12.pom",
+          "path": "junit/junit/4.12",
+          "urls": [
+            "https://jcenter.bintray.com/junit/junit/4.12/junit-4.12.pom"
+          ],
+          "sha256": "90f163f78e3ffb6f1c7ad97de9e7eba4eea25807141b85d6d12be67ca25449c4"
+        },
+        {
+          "id": {
+            "group": "org.apache",
+            "name": "apache",
+            "version": "16",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "apache-16.pom",
+          "path": "org/apache/apache/16",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/apache/16/apache-16.pom"
+          ],
+          "sha256": "9f85ff2fd7d6cb3097aa47fb419ee7f0ebe869109f98aba9f4eca3f49e74a40e"
+        },
+        {
+          "id": {
+            "group": "org.apache.commons",
+            "name": "commons-math3",
+            "version": "3.6.1",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "commons-math3-3.6.1.jar",
+          "path": "org/apache/commons/commons-math3/3.6.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar"
+          ],
+          "sha256": "1e56d7b058d28b65abd256b8458e3885b674c1d588fa43cd7d1cbb9c7ef2b308"
+        },
+        {
+          "id": {
+            "group": "org.apache.commons",
+            "name": "commons-math3",
+            "version": "3.6.1",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "commons-math3-3.6.1.pom",
+          "path": "org/apache/commons/commons-math3/3.6.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.pom"
+          ],
+          "sha256": "fad72336ea7d7dd06da103144e3740db508fa4b17d9c54d7847737edc24a7e60"
+        },
+        {
+          "id": {
+            "group": "org.apache.commons",
+            "name": "commons-parent",
+            "version": "39",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "commons-parent-39.pom",
+          "path": "org/apache/commons/commons-parent/39",
+          "urls": [
+            "https://jcenter.bintray.com/org/apache/commons/commons-parent/39/commons-parent-39.pom"
+          ],
+          "sha256": "87cd27e1a02a5c3eb6d85059ce98696bb1b44c2b8b650f0567c86df60fa61da7"
+        },
+        {
+          "id": {
+            "group": "org.checkerframework",
+            "name": "checker-qual",
+            "version": "2.8.1",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "checker-qual-2.8.1.jar",
+          "path": "org/checkerframework/checker-qual/2.8.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.jar"
+          ],
+          "sha256": "9103499008bcecd4e948da29b17864abb64304e15706444ae209d17ebe0575df"
+        },
+        {
+          "id": {
+            "group": "org.checkerframework",
+            "name": "checker-qual",
+            "version": "2.8.1",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "checker-qual-2.8.1.pom",
+          "path": "org/checkerframework/checker-qual/2.8.1",
+          "urls": [
+            "https://jcenter.bintray.com/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.pom"
+          ],
+          "sha256": "f23376b58ed795f2ff47426ac76b996d49e3918442e5d8713e3925f889a77799"
+        },
+        {
+          "id": {
+            "group": "org.codehaus.mojo",
+            "name": "animal-sniffer-annotations",
+            "version": "1.17",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "animal-sniffer-annotations-1.17.jar",
+          "path": "org/codehaus/mojo/animal-sniffer-annotations/1.17",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-annotations/1.17/animal-sniffer-annotations-1.17.jar"
+          ],
+          "sha256": "92654f493ecfec52082e76354f0ebf87648dc3d5cec2e3c3cdb947c016747a53"
+        },
+        {
+          "id": {
+            "group": "org.codehaus.mojo",
+            "name": "animal-sniffer-annotations",
+            "version": "1.17",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "animal-sniffer-annotations-1.17.pom",
+          "path": "org/codehaus/mojo/animal-sniffer-annotations/1.17",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-annotations/1.17/animal-sniffer-annotations-1.17.pom"
+          ],
+          "sha256": "e956ab5d2eb48fabae12300d0cd2d3294d4a2a41abc2068c23cb4d60ad76cbe5"
+        },
+        {
+          "id": {
+            "group": "org.codehaus.mojo",
+            "name": "animal-sniffer-parent",
+            "version": "1.17",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "animal-sniffer-parent-1.17.pom",
+          "path": "org/codehaus/mojo/animal-sniffer-parent/1.17",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/animal-sniffer-parent/1.17/animal-sniffer-parent-1.17.pom"
+          ],
+          "sha256": "18a03df16e2a184c582db7b125633c15fb7714027a84c1b532d72933dc08b81f"
+        },
+        {
+          "id": {
+            "group": "org.codehaus.mojo",
+            "name": "mojo-parent",
+            "version": "40",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "mojo-parent-40.pom",
+          "path": "org/codehaus/mojo/mojo-parent/40",
+          "urls": [
+            "https://jcenter.bintray.com/org/codehaus/mojo/mojo-parent/40/mojo-parent-40.pom"
+          ],
+          "sha256": "fc648dcdc404f8bf66e0583914ecf980176618201227bea114fae85043cb755e"
+        },
+        {
+          "id": {
+            "group": "org.hamcrest",
+            "name": "hamcrest-core",
+            "version": "1.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "hamcrest-core-1.3.jar",
+          "path": "org/hamcrest/hamcrest-core/1.3",
+          "urls": [
+            "https://jcenter.bintray.com/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
+          ],
+          "sha256": "66fdef91e9739348df7a096aa384a5685f4e875584cce89386a7a47251c4d8e9"
+        },
+        {
+          "id": {
+            "group": "org.hamcrest",
+            "name": "hamcrest-core",
+            "version": "1.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "hamcrest-core-1.3.pom",
+          "path": "org/hamcrest/hamcrest-core/1.3",
+          "urls": [
+            "https://jcenter.bintray.com/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom"
+          ],
+          "sha256": "fde386a7905173a1b103de6ab820727584b50d0e32282e2797787c20a64ffa93"
+        },
+        {
+          "id": {
+            "group": "org.hamcrest",
+            "name": "hamcrest-parent",
+            "version": "1.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "hamcrest-parent-1.3.pom",
+          "path": "org/hamcrest/hamcrest-parent/1.3",
+          "urls": [
+            "https://jcenter.bintray.com/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom"
+          ],
+          "sha256": "6d535f94efb663bdb682c9f27a50335394688009642ba7a9677504bc1be4129b"
+        },
+        {
+          "id": {
+            "group": "org.sonatype.oss",
+            "name": "oss-parent",
+            "version": "7",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "oss-parent-7.pom",
+          "path": "org/sonatype/oss/oss-parent/7",
+          "urls": [
+            "https://jcenter.bintray.com/org/sonatype/oss/oss-parent/7/oss-parent-7.pom"
+          ],
+          "sha256": "b51f8867c92b6a722499557fc3a1fdea77bdf9ef574722fe90ce436a29559454"
+        },
+        {
+          "id": {
+            "group": "org.sonatype.oss",
+            "name": "oss-parent",
+            "version": "9",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "oss-parent-9.pom",
+          "path": "org/sonatype/oss/oss-parent/9",
+          "urls": [
+            "https://jcenter.bintray.com/org/sonatype/oss/oss-parent/9/oss-parent-9.pom"
+          ],
+          "sha256": "fb40265f982548212ff82e362e59732b2187ec6f0d80182885c14ef1f982827a"
+        }
+      ]
+    }
+  }
+}
