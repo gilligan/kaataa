@@ -1,3 +1,11 @@
+use nom::IResult;
+
+use nom::branch::alt;
+use nom::bytes::complete::tag;
+use nom::bytes::complete::take_while1;
+use nom::combinator::map;
+use nom::combinator::map_res;
+
 #[derive(Debug, PartialEq)]
 enum Orientation {
     N,
@@ -20,7 +28,48 @@ enum Instruction {
     Right,
 }
 
+fn parse_instruction(input: &str) -> IResult<&str, Instruction> {
+    alt((
+        map(tag("L"), |_| Instruction::Left),
+        map(tag("R"), |_| Instruction::Right),
+        map(tag("M"), |_| Instruction::Move),
+    ))(input)
+}
+
+fn parse_int(input: &str) -> IResult<&str, i32> {
+    map_res(take_while1(|c: char| c >= '0' && c <= '9'), |x: &str| {
+        x.parse::<i32>()
+    })(input)
+}
+
+fn parse_orientation(input: &str) -> IResult<&str, Orientation> {
+    alt((
+        map(tag("N"), |_| Orientation::N),
+        map(tag("S"), |_| Orientation::S),
+        map(tag("E"), |_| Orientation::E),
+        map(tag("W"), |_| Orientation::W),
+    ))(input)
+}
+
 impl Rover {
+    fn parse(input: &str) -> IResult<&str, Rover> {
+        let (input, x) = parse_int(input)?;
+        // whitespace
+        let (input, _) = tag(" ")(input)?;
+        let (input, y) = parse_int(input)?;
+        let (input, _) = tag(" ")(input)?;
+        let (input, o) = parse_orientation(input)?;
+
+        Ok((
+            input,
+            Rover {
+                x,
+                y,
+                orientation: o,
+            },
+        ))
+    }
+
     fn move_rover(self) -> Rover {
         match &self.orientation {
             N => Rover {
@@ -146,5 +195,28 @@ mod tests {
                 orientation: N
             }
         );
+    }
+
+    #[test]
+    fn can_parse_Rover() {
+        let expected = Rover {
+            x: 1,
+            y: 1,
+            orientation: N,
+        };
+        let (_, rover) = Rover::parse("1 1 N").unwrap();
+        assert_eq!(rover, expected);
+    }
+
+    #[test]
+    fn can_parse_Instruction() {
+        let (_, inst) = parse_instruction("L").unwrap();
+        assert_eq!(inst, Instruction::Left);
+
+        let (_, inst) = parse_instruction("R").unwrap();
+        assert_eq!(inst, Instruction::Right);
+
+        let (_, inst) = parse_instruction("M").unwrap();
+        assert_eq!(inst, Instruction::Move);
     }
 }
