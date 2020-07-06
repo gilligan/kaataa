@@ -1,4 +1,16 @@
 {
+    "gradle2nix": {
+        "branch": "master",
+        "description": "Create Nix configurations suitable for reproducible packaging",
+        "homepage": null,
+        "owner": "tadfisher",
+        "repo": "gradle2nix",
+        "rev": "c3c40795660f0c523dbfc65e2d74bdaceb6a2849",
+        "sha256": "04skv5nhbqzybxsqp7b7l4s7nl66p8cd92f6czlivwcjnj36lzya",
+        "type": "tarball",
+        "url": "https://github.com/tadfisher/gradle2nix/archive/c3c40795660f0c523dbfc65e2d74bdaceb6a2849.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "niv": {
         "branch": "master",
         "description": "Easy dependency management for Nix projects",
