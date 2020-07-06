@@ -5,9 +5,8 @@ package mars.rover;
 
 import org.junit.Test;
 
-import mars.rover.Library;
-import mars.rover.Library.*;
-
+import mars.rover.Rover;
+import mars.rover.Rover.*;
 import static org.junit.Assert.*;
 
 public class ParserTest {
@@ -15,20 +14,20 @@ public class ParserTest {
     @Test
     public void testParseRover() {
         {
-            Library.Rover r = Parser.parseRover("1 2 N");
-            assertEquals(r, new Library.Rover(1, 2, Library.Orientation.N));
+            Rover r = Parser.parseRover("1 2 N");
+            assertEquals(r, new Rover(1, 2, Rover.Orientation.N));
         }
         {
-            Library.Rover r = Parser.parseRover("2 2 S");
-            assertEquals(r, new Library.Rover(2, 2, Library.Orientation.S));
+            Rover r = Parser.parseRover("2 2 S");
+            assertEquals(r, new Rover(2, 2, Rover.Orientation.S));
         }
     }
 
     @Test
     public void testParseInstruction() {
-        assertEquals(Library.Instruction.Move, Parser.parseInstruction("M"));
-        assertEquals(Library.Instruction.Left, Parser.parseInstruction("L"));
-        assertEquals(Library.Instruction.Right, Parser.parseInstruction("R"));
+        assertEquals(Rover.Instruction.Move, Parser.parseInstruction("M"));
+        assertEquals(Rover.Instruction.Left, Parser.parseInstruction("L"));
+        assertEquals(Rover.Instruction.Right, Parser.parseInstruction("R"));
     }
 
     @Test
@@ -48,24 +47,24 @@ public class ParserTest {
     public void testRunProgram() {
         {
             String program = "5 5\n1 2 N\nLMLMLMLMM";
-            Rover expected = new Library.Rover(1, 3, Library.Orientation.N);
+            Rover expected = new Rover(1, 3, Rover.Orientation.N);
 
-            assertEquals(Parser.runProgram(program), new Library.Rover[]{expected});
+            assertEquals(Parser.runProgram(program), new Rover[]{expected});
         }
         {
             String program = "5 5\n1 2 N\nLMLMLMLMMM";
-            Rover expected = new Library.Rover(1, 4, Library.Orientation.N);
+            Rover expected = new Rover(1, 4, Rover.Orientation.N);
 
-            assertEquals(Parser.runProgram(program), new Library.Rover[]{expected});
+            assertEquals(Parser.runProgram(program), new Rover[]{expected});
         }
 
 
         {
             String program = "5 5\n1 2 N\nLMLMLMLMMM\n1 2 N\nLMLMLMLMM";
-            Rover expected1 = new Library.Rover(1, 4, Library.Orientation.N);
-            Rover expected2 = new Library.Rover(1, 3, Library.Orientation.N);
+            Rover expected1 = new Rover(1, 4, Rover.Orientation.N);
+            Rover expected2 = new Rover(1, 3, Rover.Orientation.N);
 
-            assertEquals(Parser.runProgram(program), new Library.Rover[]{
+            assertEquals(Parser.runProgram(program), new Rover[]{
                 expected1,
                 expected2
             });
