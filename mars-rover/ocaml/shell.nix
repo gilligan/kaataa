@@ -16,6 +16,9 @@ let
     #require "core";;
     #require "core.syntax";;
   '';
+  watch-tests = pkgs.writeScriptBin "watch-tests" ''
+    ls -1 rover.ml | entr -c dune runtest
+  '';
 in
 pkgs.stdenv.mkDerivation rec {
   name = "rwo-shell";
@@ -32,7 +35,7 @@ pkgs.stdenv.mkDerivation rec {
       stdio
       ppx_expect
       merlin
-    ] ++ [pkgs.opam pkgs.entr];
+    ] ++ [pkgs.opam pkgs.entr watch-tests pkgs.ocamlformat];
   OCAMLINIT = "${ocamlInit}";
   shellHook = ''
     alias utop="utop -init ${ocamlInit}"
