@@ -5,8 +5,12 @@ use nom::bytes::complete::tag;
 use nom::bytes::complete::take_while1;
 use nom::combinator::map;
 use nom::combinator::map_res;
+use nom::multi::many0;
+use nom::sequence::preceded;
+use nom::sequence::terminated;
+use nom::sequence::tuple;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 enum Orientation {
     N,
     S,
@@ -14,18 +18,49 @@ enum Orientation {
     E,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 struct Rover {
     x: i32,
     y: i32,
     orientation: Orientation,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 enum Instruction {
     Move,
     Left,
     Right,
+}
+
+fn run_program(input: &str) -> Result<Vec<Rover>, &str> {
+    match parse_program(input) {
+        Ok((_, programs)) => {
+            let res: Vec<_> = programs
+                .into_iter()
+                .map(|(rover, insts)| rover.exec_instructions(&insts))
+                .collect();
+
+            Ok(res)
+        }
+        Err(_) => Err("failed to parse program"),
+    }
+}
+
+type Program = (Rover, Vec<Instruction>);
+
+fn parse_program(input: &str) -> IResult<&str, Vec<Program>> {
+    let (input, _) = parse_int(input)?;
+    let (input, _) = tag(" ")(input)?;
+    let (input, _) = parse_int(input)?;
+    let (input, _) = tag("\n")(input)?;
+
+    many1!(
+        input,
+        tuple((
+            Rover::parse,
+            preceded(tag("\n"), terminated(parse_instructions, many0(tag("\n"))))
+        ))
+    )
 }
 
 fn parse_instruction(input: &str) -> IResult<&str, Instruction> {
@@ -34,6 +69,10 @@ fn parse_instruction(input: &str) -> IResult<&str, Instruction> {
         map(tag("R"), |_| Instruction::Right),
         map(tag("M"), |_| Instruction::Move),
     ))(input)
+}
+
+fn parse_instructions(input: &str) -> IResult<&str, Vec<Instruction>> {
+    many1!(input, parse_instruction)
 }
 
 fn parse_int(input: &str) -> IResult<&str, i32> {
@@ -54,7 +93,6 @@ fn parse_orientation(input: &str) -> IResult<&str, Orientation> {
 impl Rover {
     fn parse(input: &str) -> IResult<&str, Rover> {
         let (input, x) = parse_int(input)?;
-        // whitespace
         let (input, _) = tag(" ")(input)?;
         let (input, y) = parse_int(input)?;
         let (input, _) = tag(" ")(input)?;
@@ -70,36 +108,41 @@ impl Rover {
         ))
     }
 
-    fn move_rover(self) -> Rover {
+    fn exec_instructions(&self, insts: &[Instruction]) -> Rover {
+        insts.into_iter().fold(self.clone(), |r, i| r.exec(*i))
+    }
+
+    fn move_rover(&self) -> Rover {
+        use Orientation::*;
         match &self.orientation {
             N => Rover {
                 y: self.y + 1,
-                ..self
+                ..*self
             },
             S => Rover {
                 y: self.y - 1,
-                ..self
+                ..*self
             },
             E => Rover {
                 x: self.x + 1,
-                ..self
+                ..*self
             },
             W => Rover {
                 x: self.x - 1,
-                ..self
+                ..*self
             },
         }
     }
 
-    fn exec(self, inst: Instruction) -> Rover {
+    fn exec(&self, inst: Instruction) -> Rover {
         match inst {
-            Move => self.move_rover(),
-            Left => self.rotate_left(),
-            Right => self.rotate_right(),
+            Instruction::Move => self.move_rover(),
+            Instruction::Left => self.rotate_left(),
+            Instruction::Right => self.rotate_right(),
         }
     }
 
-    fn rotate_left(self) -> Rover {
+    fn rotate_left(&self) -> Rover {
         use Orientation::*;
         let o = match self.orientation {
             N => W,
@@ -109,11 +152,11 @@ impl Rover {
         };
         Rover {
             orientation: o,
-            ..self
+            ..*self
         }
     }
 
-    fn rotate_right(self) -> Rover {
+    fn rotate_right(&self) -> Rover {
         use Orientation::*;
         let o = match self.orientation {
             N => E,
@@ -123,7 +166,7 @@ impl Rover {
         };
         Rover {
             orientation: o,
-            ..self
+            ..*self
         }
     }
 }
@@ -186,6 +229,7 @@ mod tests {
             y: 1,
             orientation: N,
         };
+
         let updated = r.exec(Move);
         assert_eq!(
             updated,
@@ -193,6 +237,166 @@ mod tests {
                 x: 1,
                 y: 2,
                 orientation: N
+            }
+        );
+    }
+
+    #[test]
+    fn rover_rotates_left() {
+        use Instruction::*;
+        let r = Rover {
+            x: 1,
+            y: 1,
+            orientation: N,
+        };
+        let r = r.rotate_left();
+        assert_eq!(
+            r,
+            Rover {
+                x: 1,
+                y: 1,
+                orientation: W,
+            }
+        );
+        let r = r.rotate_left();
+        assert_eq!(
+            r,
+            Rover {
+                x: 1,
+                y: 1,
+                orientation: S,
+            }
+        );
+        let r = r.rotate_left();
+        assert_eq!(
+            r,
+            Rover {
+                x: 1,
+                y: 1,
+                orientation: E,
+            }
+        );
+        let r = r.rotate_left();
+        assert_eq!(
+            r,
+            Rover {
+                x: 1,
+                y: 1,
+                orientation: N,
+            }
+        );
+    }
+
+    #[test]
+    fn rover_rotates_right() {
+        use Instruction::*;
+        let r = Rover {
+            x: 1,
+            y: 1,
+            orientation: N,
+        };
+        let r = r.rotate_right();
+        assert_eq!(
+            r,
+            Rover {
+                x: 1,
+                y: 1,
+                orientation: E,
+            }
+        );
+        let r = r.rotate_right();
+        assert_eq!(
+            r,
+            Rover {
+                x: 1,
+                y: 1,
+                orientation: S,
+            }
+        );
+        let r = r.rotate_right();
+        assert_eq!(
+            r,
+            Rover {
+                x: 1,
+                y: 1,
+                orientation: W,
+            }
+        );
+        let r = r.rotate_right();
+        assert_eq!(
+            r,
+            Rover {
+                x: 1,
+                y: 1,
+                orientation: N,
+            }
+        );
+    }
+
+    #[test]
+    fn rover_moves() {
+        use Instruction::*;
+        let r = Rover {
+            x: 1,
+            y: 1,
+            orientation: N,
+        };
+        let r = r.rotate_right().move_rover();
+        assert_eq!(
+            r,
+            Rover {
+                x: 2,
+                y: 1,
+                orientation: E,
+            }
+        );
+        let r = r.rotate_right().move_rover();
+        assert_eq!(
+            r,
+            Rover {
+                x: 2,
+                y: 0,
+                orientation: S,
+            }
+        );
+        let r = r.rotate_right().move_rover();
+        assert_eq!(
+            r,
+            Rover {
+                x: 1,
+                y: 0,
+                orientation: W,
+            }
+        );
+        let r = r.rotate_right().move_rover();
+        assert_eq!(
+            r,
+            Rover {
+                x: 1,
+                y: 1,
+                orientation: N,
+            }
+        );
+    }
+
+    #[test]
+    fn can_execute_a_series_of_commands_1() {
+        use Instruction::*;
+        let r = Rover {
+            x: 1,
+            y: 1,
+            orientation: N,
+        };
+        let instructions = [Left /*Left, Move*/];
+
+        let result = r.exec_instructions(&instructions);
+
+        assert_eq!(
+            result,
+            Rover {
+                x: 1,
+                y: 1,
+                orientation: W,
             }
         );
     }
@@ -218,5 +422,132 @@ mod tests {
 
         let (_, inst) = parse_instruction("M").unwrap();
         assert_eq!(inst, Instruction::Move);
+    }
+
+    #[test]
+    fn can_parse_Instructions() {
+        let (_, insts) = parse_instructions("LRMMLR").unwrap();
+        assert_eq!(
+            insts,
+            vec![
+                Instruction::Left,
+                Instruction::Right,
+                Instruction::Move,
+                Instruction::Move,
+                Instruction::Left,
+                Instruction::Right
+            ]
+        );
+    }
+
+    #[test]
+    fn can_run_a_program() {
+        let program = "5 5
+1 2 N
+LMLMLMLMM";
+        let r = run_program(program).unwrap();
+        assert_eq!(
+            r,
+            vec![Rover {
+                x: 1,
+                y: 3,
+                orientation: N,
+            }]
+        );
+    }
+
+    #[test]
+    fn can_run_a_program_with_multiple_rovers() {
+        let program = "5 5
+1 2 N
+LMLMLMLMM
+1 2 N
+LMLMLMLMM
+";
+        let r = run_program(program).unwrap();
+        assert_eq!(
+            r,
+            vec![
+                Rover {
+                    x: 1,
+                    y: 3,
+                    orientation: N,
+                },
+                Rover {
+                    x: 1,
+                    y: 3,
+                    orientation: N,
+                }
+            ]
+        );
+    }
+
+    #[test]
+    fn test_parse_program() {
+        let program = "5 5
+1 2 N
+LMLMLMLMM
+";
+        let (rem, programs) = parse_program(program).unwrap();
+        assert_eq!(rem.len(), 0);
+
+        assert_eq!(programs.len(), 1);
+        assert_eq!(
+            programs[0].0,
+            Rover {
+                x: 1,
+                y: 2,
+                orientation: N
+            }
+        );
+        assert_eq!(
+            programs[0].1,
+            vec![
+                Instruction::Left,
+                Instruction::Move,
+                Instruction::Left,
+                Instruction::Move,
+                Instruction::Left,
+                Instruction::Move,
+                Instruction::Left,
+                Instruction::Move,
+                Instruction::Move
+            ]
+        );
+    }
+    #[test]
+    fn test_parse_program_multiple_rovers() {
+        let program = "5 5
+1 2 N
+LMLMLMLMM
+1 2 N
+LMLMLMLMM
+";
+        let (rem, programs) = parse_program(program).unwrap();
+        assert_eq!(rem.len(), 0);
+
+        assert_eq!(programs.len(), 2);
+        assert_eq!(
+            programs[0].0,
+            Rover {
+                x: 1,
+                y: 2,
+                orientation: N
+            }
+        );
+        assert_eq!(
+            programs[0].1,
+            vec![
+                Instruction::Left,
+                Instruction::Move,
+                Instruction::Left,
+                Instruction::Move,
+                Instruction::Left,
+                Instruction::Move,
+                Instruction::Left,
+                Instruction::Move,
+                Instruction::Move
+            ]
+        );
     }
 }
