@@ -34,6 +34,7 @@ pkgs.stdenv.mkDerivation rec {
       base
       stdio
       ppx_expect
+      angstrom
       merlin
     ] ++ [pkgs.opam pkgs.entr watch-tests pkgs.ocamlformat];
   OCAMLINIT = "${ocamlInit}";
