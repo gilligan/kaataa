@@ -1,3 +1,4 @@
-(tests
-  (names rover)
-  (libraries ounit2 angstrom))
+(library
+  (name rover)
+  (modules rover)
+  (libraries angstrom ounit2))
