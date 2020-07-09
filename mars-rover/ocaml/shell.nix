@@ -46,6 +46,7 @@ pkgs.stdenv.mkDerivation rec {
     #
     # ```
     # execute "set rtp+=" . $MERLIN_PATH
+    # let b:merlin_path="${ocamlPackages.merlin}/bin/ocamlmerlin"
     # ```
     export MERLIN_PATH=${ocamlPackages.merlin}/share/merlin/vim
   '';

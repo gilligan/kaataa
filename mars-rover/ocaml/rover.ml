@@ -18,6 +18,9 @@ type instruction = Move | Left | Right
 
 type rover = { x : int; y : int; o : orientation }
 
+type program = rover * instruction list
+
+
 let string_of_rover r =
   String.concat " "
     [
@@ -29,6 +32,28 @@ let string_of_rover r =
       string_of_orientation r.o;
       "}";
     ]
+
+let string_of_instruction i =
+  match i with
+    | Move -> "Move"
+    | Left -> "Left"
+    | Right -> "Right"
+
+let string_of_instructions is =
+  String.concat " "
+  (List.map string_of_instruction is)
+
+let string_of_program p =
+  String.concat " "
+  [
+    string_of_rover (fst p);
+    string_of_instructions (snd p);
+]
+
+let string_of_programs ps =
+  String.concat " "
+  (List.map string_of_program ps)
+
 
 let make_rover x y o = { x = x; y = y; o = o }
 
@@ -73,12 +98,14 @@ let parse_instruction = choice [string "L" *> return Left; string "R" *> return 
 let parse_instructions = many parse_instruction
 let parse_coordinate = mk_tuple <$> parse_int <*> (char ' ' *> parse_int)
 let parse_rover = make_rover <$> parse_int <*> (char ' ' *> parse_int) <*> (char ' ' *> parse_orientation)
+let parse_program = parse_coordinate *> char '\n' *> many1 ((mk_tuple <$> parse_rover <*> (char '\n' *> parse_instructions)) <* char '\n')
 
 (* -------------------------------------------------------------------------- *)
 (* Tests *)
 (* -------------------------------------------------------------------------- *)
 
 let assert_rover_eq r1 r2 = assert_equal ~printer:string_of_rover r1 r2
+let assert_instructions_eq i1 i2 = assert_equal ~printer:string_of_instructions i1 i2
 
 let test_parse_orientation _ =
     let n = parse_string  parse_orientation "N" in
@@ -108,6 +135,15 @@ let test_parse_coordinate _ =
  let b = parse_string parse_coordinate "0 2" in
  assert_equal a (Ok (1, 1));
  assert_equal b (Ok (0, 2))
+
+let test_parse_program  _ =
+  let p = "5 5\n1 2 N\nLRMRLM\n1 1 N\nLRM\n" in
+  let res = Result.get_ok (parse_string parse_program p) in
+  let expected = [
+    ((make_rover 1 2 N), [Left; Right; Move; Right; Left; Move; ]);
+    ((make_rover 1 1 N), [Left; Right; Move; ]);
+  ] in
+  assert_equal ~printer:string_of_programs expected res
 
 let test_parse_rover _ =
   let r1 = parse_string parse_rover "1 2 N" in
@@ -149,6 +185,7 @@ let suite =
          "test_parse_instruction" >:: test_parse_instruction;
          "test_parse_coordinate" >:: test_parse_coordinate;
          "test_parse_rover" >:: test_parse_rover;
+         "test_parse_program" >:: test_parse_program
        ]
 
 let () = run_test_tt_main suite
