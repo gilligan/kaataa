@@ -1,21 +1,26 @@
 (ns rover.core
   (:gen-class))
 
+(defrecord Rover [x y dir])
 
-(def N :N)
-(def E :E)
-(def S :S)
-(def W :W)
+(defn make-rover [x y dir]
+  (->Rover x y dir))
 
-(defstruct Rover (:x :y :orientation))
-(defn mk_rover [x y o] (struct-map Rover
-                                   :x x
-                                   :y y
-                                   :orientation o
-                                   ))
+(defn rotate-left [r]
+  (let [d (:dir r)]
+    (cond
+      (= d :N) (assoc r :dir :W)
+      (= d :W) (assoc r :dir :S)
+      (= d :S) (assoc r :dir :E)
+      (= d :E) (assoc r :dir :N))))
 
-(defn rotate_left [rover] (assoc-in rover [:orientation] W))
-
+(defn rotate-right [r]
+  (let [d (:dir r)]
+    (cond
+      (= d :N) (assoc r :dir :E)
+      (= d :E) (assoc r :dir :S)
+      (= d :S) (assoc r :dir :W)
+      (= d :W) (assoc r :dir :N))))
 
 (defn -main
   "I don't do a whole lot ... yet."

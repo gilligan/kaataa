@@ -7,4 +7,10 @@ let
 in
 pkgs.mkShell {
   buildInputs = with pkgs; [ repl clojure leiningen entr clj-kondo];
+  shellHook = ''
+    # needs to be run initially for clj-kondo to figure out
+    # the project layout and dependencies/components
+    mkdir -p .clj-kondo
+    alias clj-kondo-init="clj-kondo lint "$(lein classpath)"
+  '';
 }
