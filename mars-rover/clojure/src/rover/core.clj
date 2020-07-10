@@ -22,6 +22,23 @@
       (= d :S) (assoc r :dir :W)
       (= d :W) (assoc r :dir :N))))
 
+(defn move-rover [r]
+  (let [d (:dir r)]
+    (cond
+      (= d :N) (update r :y inc)
+      (= d :S) (update r :y dec)
+      (= d :E) (update r :x inc)
+      (= d :W) (update r :x dec))))
+
+(defn rover-exec-instr [r i]
+  (cond
+    (= i :move) (move-rover r)
+    (= i :left) (rotate-left r)
+    (= i :right) (rotate-right r)))
+
+(defn rover-exec-instrs [r is]
+  (reduce rover-exec-instr r is))
+
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
