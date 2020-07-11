@@ -19,15 +19,6 @@ data Coord = Coord {x :: Int, y :: Int}
 data Rover = Rover {coord :: Coord, orientation :: Orientation}
   deriving (Show, Eq)
 
-roverDistance :: Rover -> Rover -> Int
-roverDistance (Rover c1 _) (Rover c2 _) = distance c1 c2
-
-distance :: Coord -> Coord -> Int
-distance (Coord x1 y1) (Coord x2 y2) =
-  let x = if x1 > x2 then x1 - x2 else x2 - x1
-      y = if y1 > y2 then y1 - y2 else y2 - y1
-   in abs x + abs y
-
 orientationReader :: ReadP Orientation
 orientationReader =
   (char 'E' $> E)
@@ -50,12 +41,10 @@ instructionReader =
 parseRover :: ReadP Rover
 parseRover = Rover <$> coordinateReader <*> (char ' ' *> orientationReader)
 
-parseInstructions :: ReadP [Instruction]
-parseInstructions = many instructionReader
-
 problemReader :: ReadP [(Rover, [Instruction])]
 problemReader = coordinateReader >> char '\n' >> many coordAndInstr <* eof
   where
+    parseInstructions = many instructionReader
     coordAndInstr = (,) <$> (parseRover <* char '\n') <*> (parseInstructions <* char '\n')
 
 parseProblem :: String -> Maybe [(Rover, [Instruction])]
@@ -64,6 +53,13 @@ parseProblem s = case x of
   _ -> Nothing
   where
     x = readP_to_S problemReader s
+
+parseProblem' :: String -> Maybe [(Rover, [Instruction])]
+parseProblem' s =
+  let res = readP_to_S problemReader s
+   in case res of
+        [(x, _)] -> Just x
+        _ -> Nothing
 
 rotateLeft :: Orientation -> Orientation
 rotateLeft N = W
@@ -81,17 +77,14 @@ moveRover :: Rover -> Instruction -> Rover
 moveRover (Rover c o) ILeft = Rover c $ rotateLeft o
 moveRover (Rover c o) IRight = Rover c $ rotateRight o
 moveRover (Rover c o) IMove =
-  if c /= Coord 12 45
-    then
-      Rover
-        ( case o of
-            N -> c {y = y c + 1}
-            S -> c {y = y c - 1}
-            E -> c {x = x c + 1}
-            W -> c {x = x c - 1}
-        )
-        o
-    else (Rover c o)
+  Rover
+    ( case o of
+        N -> c {y = y c + 1}
+        S -> c {y = y c - 1}
+        E -> c {x = x c + 1}
+        W -> c {x = x c - 1}
+    )
+    o
 
 runRover :: Rover -> [Instruction] -> Rover
 runRover = foldl moveRover

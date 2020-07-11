@@ -15,16 +15,11 @@ problem =
     ++ "1 2 N\n"
     ++ "LMLMLMLMM\n"
 
---- 1 2 N
--- L 1 2 W
--- M 0 2 W
--- L 0 2 S
--- M 0 1 S
--- L 0 1 E
--- M 1 1 E
--- L 1 1 N
--- M 2 1 N
--- M 3 1 N
+roverDistance :: Rover -> Rover -> Int
+roverDistance (Rover c1 _) (Rover c2 _) = distance c1 c2
+
+distance :: Coord -> Coord -> Int
+distance (Coord x1 y1) (Coord x2 y2) = abs (x1 - x2) + abs (y1 - y2)
 
 parse :: ReadP a -> String -> Maybe a
 parse p str =
@@ -103,8 +98,6 @@ spec = do
     it "parses a Rover correctly" $ do
       parse parseRover "1 2 N" `shouldBe` Just (Rover (Coord 1 2) N)
       parse parseRover "1 X N" `shouldBe` Nothing
-    it "parses instruction lists" $ do
-      parse (parseInstructions <* eof) "MMLR" `shouldBe` Just [IMove, IMove, ILeft, IRight]
     it "parses problem" $ do
       parse problemReader problem `shouldBe` Just [(Rover (Coord 1 2) N, [ILeft, IMove, ILeft, IMove, ILeft, IMove, ILeft, IMove, IMove])]
     it "moves the rover" $ do
