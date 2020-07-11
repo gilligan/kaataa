@@ -6,13 +6,9 @@
   (testing "make-rover can construct a Rover"
     (is (= (make-rover 1 1 :S) (->Rover 1 1 :S)))))
 
-(deftest rotate-left-test
-  (testing "can rotate rover left"
-    (is (= (rotate-left (make-rover 1 1 :N)) (make-rover 1 1 :W)))))
-
 (deftest left-rotation-test
   (testing "rotating the rover left"
-    (are [x y] (= (rotate-left x) y)
+    (are [x y] (= (rotate x :left) y)
          (make-rover 1 1 :N) (make-rover 1 1 :W)
          (make-rover 1 1 :W) (make-rover 1 1 :S)
          (make-rover 1 1 :S) (make-rover 1 1 :E)
@@ -20,7 +16,7 @@
 
 (deftest right-rotation-test
   (testing "rotating the rover right"
-    (are [x y] (= (rotate-right x) y)
+    (are [x y] (= (rotate x :right) y)
          (make-rover 1 1 :N) (make-rover 1 1 :E)
          (make-rover 1 1 :E) (make-rover 1 1 :S)
          (make-rover 1 1 :S) (make-rover 1 1 :W)

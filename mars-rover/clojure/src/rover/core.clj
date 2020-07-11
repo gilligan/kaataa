@@ -12,23 +12,25 @@
 (defn make-rover [x y dir]
   (->Rover x y dir))
 
-(defn rotate-left [r]
-  (let [d (:dir r)]
-    (cond
-      (= d :N) (assoc r :dir :W)
-      (= d :W) (assoc r :dir :S)
-      (= d :S) (assoc r :dir :E)
-      (= d :E) (assoc r :dir :N))))
+(defn rotate
+  "Rotate rover to the left or right"
+  [r to]
+  (let [left {:N :W
+              :W :S
+              :S :E
+              :E :N}
+        right {:N :E
+               :E :S
+               :S :W
+               :W :N}
+        d (:dir r)]
+    (if (= to :left)
+      (assoc r :dir (get left d))
+      (assoc r :dir (get right d)))))
 
-(defn rotate-right [r]
-  (let [d (:dir r)]
-    (cond
-      (= d :N) (assoc r :dir :E)
-      (= d :E) (assoc r :dir :S)
-      (= d :S) (assoc r :dir :W)
-      (= d :W) (assoc r :dir :N))))
-
-(defn move-rover [r]
+(defn move-rover
+  "Move a rover one unit towards its current orientation"
+  [r]
   (let [d (:dir r)]
     (cond
       (= d :N) (update r :y inc)
@@ -36,33 +38,45 @@
       (= d :E) (update r :x inc)
       (= d :W) (update r :x dec))))
 
-(defn rover-exec-instr [r i]
+(defn rover-exec-instr
+  "Execute a move or rotation instruction"
+  [r i]
   (cond
     (= i :move) (move-rover r)
-    (= i :left) (rotate-left r)
-    (= i :right) (rotate-right r)))
+    (= i :left) (rotate r :left)
+    (= i :right) (rotate r :right)))
 
-(defn rover-exec-instrs [r is]
+(defn rover-exec-instrs
+  "Execute a sequence of instructions"
+  [r is]
   (reduce rover-exec-instr r is))
 
-(defn parse-dir [c]
+(defn parse-dir
+  "Parse a direction for a string/character"
+  [c]
   (cond
     (or (= c \N) (= c "N")) :N
     (or (= c \S) (= c "S")) :S
     (or (= c \E) (= c "E")) :E
     (or (= c \W) (= c "W")) :W))
 
-(defn parse-inst [i]
+(defn parse-inst
+  "Parse an instruction from a string/character"
+  [i]
   (cond
     (or (= i \L) (= i "L")) :left
     (or (= i \R) (= i "R")) :right
     (or (= i \M) (= i "M")) :move))
 
-(defn parse-rover [s]
+(defn parse-rover
+  "Parse a rover description from a string"
+  [s]
   (let [xs (str/split s #" ")]
     (make-rover (read-string (nth xs 0)) (read-string (nth xs 1)) (parse-dir (nth xs 2)))))
 
-(defn parse-program [lines]
+(defn parse-program
+  "Parse a single rover program"
+  [lines]
   (let [size (str/split (nth lines 0) #" ")
         r (parse-rover (nth lines 1))
         is (map parse-inst (seq (nth lines 2)))
@@ -70,14 +84,20 @@
         h (read-string (nth size 1))]
     (make-program w h r is)))
 
-(defn parse-programs [s]
+(defn parse-programs
+  "Parse one or more rover programs"
+  [s]
   (let [lines (str/split-lines s)
         ps (partition 3 lines)]
     (map parse-program ps)))
 
-(defn run-program [text]
-  (let [ps (parse-programs text)]
-    (map (fn [p] (rover-exec-instrs (:rover p) (:inst p))) ps)))
+(defn run-program
+  "Run a program returning a list of rovers"
+  [text]
+  (let [ps (parse-programs text)
+        exec-rover-instrs (fn [r is] (reduce rover-exec-instr r is))
+        exec (fn [p] (exec-rover-instrs  (:rover p) (:inst p)))]
+    (map exec ps)))
 
 (defn -main
   "I don't do a whole lot ... yet."
