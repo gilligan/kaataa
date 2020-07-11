@@ -9,7 +9,9 @@
 
 (defrecord Rover [x y dir])
 
-(defn make-rover [x y dir]
+(defn make-rover
+  "Create a rover from x, y, direction"
+  [x y dir]
   (->Rover x y dir))
 
 (defn rotate
@@ -71,11 +73,15 @@
 (defn parse-rover
   "Parse a rover description from a string"
   [s]
-  (let [xs (str/split s #" ")]
-    (make-rover (read-string (nth xs 0)) (read-string (nth xs 1)) (parse-dir (nth xs 2)))))
+  (let [xs (str/split s #" ")
+        x (read-string (nth xs 0))
+        y (read-string (nth xs 1))
+        d (parse-dir (nth xs 2))
+        ]
+    (make-rover x y d)))
 
 (defn parse-program
-  "Parse a single rover program"
+  "Parse a single rover program from a list of lines"
   [lines]
   (let [size (str/split (nth lines 0) #" ")
         r (parse-rover (nth lines 1))
