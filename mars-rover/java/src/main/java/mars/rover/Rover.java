@@ -2,7 +2,10 @@ package mars.rover;
 
 import java.util.Arrays;
 import java.util.List;
+import lombok.*;
 
+@EqualsAndHashCode
+@ToString
 public class Rover {
 
     public static enum Orientation {
@@ -26,28 +29,6 @@ public class Rover {
         this.x = x;
         this.y = y;
         this.orientation = o;
-    }
-
-    @Override
-    public String toString() {
-        String s = String.format("Rover (%d,%d,%s)", x, y, orientation);
-        return s;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-
-        if (o == null)
-            return false;
-
-        if (!(o instanceof Rover))
-            return false;
-
-        Rover other = (Rover) o;
-        return other.x == x && other.y == y && other.orientation == orientation;
-
     }
 
     public Rover move() {

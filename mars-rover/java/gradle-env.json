@@ -4,14 +4,60 @@
     "version": "unspecified",
     "path": "",
     "gradle": {
-      "version": "5.6.4",
+      "version": "6.1",
       "type": "bin",
-      "url": "https://services.gradle.org/distributions/gradle-5.6.4-bin.zip",
-      "sha256": "1f3067073041bc44554d0efe5d402a33bc3d3c93cc39ab684f308586d732a80d",
-      "nativeVersion": "0.18"
+      "url": "https://services.gradle.org/distributions/gradle-6.1-bin.zip",
+      "sha256": "d0c43d14e1c70a48b82442f435d06186351a2d290d72afd5b8866f15e6d7038a",
+      "nativeVersion": "0.19"
     },
     "dependencies": {
-      "plugin": [],
+      "plugin": [
+        {
+          "id": {
+            "group": "io.franzbecker",
+            "name": "gradle-lombok",
+            "version": "4.0.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "gradle-lombok-4.0.0.jar",
+          "path": "io/franzbecker/gradle-lombok/4.0.0",
+          "urls": [
+            "https://plugins.gradle.org/m2/io/franzbecker/gradle-lombok/4.0.0/gradle-lombok-4.0.0.jar"
+          ],
+          "sha256": "febf799426d160872f8ad8c016d49c0a9b26f9f0a66316a1446adcbfd45aaeab"
+        },
+        {
+          "id": {
+            "group": "io.franzbecker",
+            "name": "gradle-lombok",
+            "version": "4.0.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gradle-lombok-4.0.0.pom",
+          "path": "io/franzbecker/gradle-lombok/4.0.0",
+          "urls": [
+            "https://plugins.gradle.org/m2/io/franzbecker/gradle-lombok/4.0.0/gradle-lombok-4.0.0.pom"
+          ],
+          "sha256": "641d9a7360d20dbcc9ad99da49a940a4148e8e83289a154b1693062c7fca56a7"
+        },
+        {
+          "id": {
+            "group": "io.franzbecker.gradle-lombok",
+            "name": "io.franzbecker.gradle-lombok.gradle.plugin",
+            "version": "4.0.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "io.franzbecker.gradle-lombok.gradle.plugin-4.0.0.pom",
+          "path": "io/franzbecker/gradle-lombok/io.franzbecker.gradle-lombok.gradle.plugin/4.0.0",
+          "urls": [
+            "https://plugins.gradle.org/m2/io/franzbecker/gradle-lombok/io.franzbecker.gradle-lombok.gradle.plugin/4.0.0/io.franzbecker.gradle-lombok.gradle.plugin-4.0.0.pom"
+          ],
+          "sha256": "aef790b966962a51c1cffd8899c8640ed93d5c750a4c47df558b4afa6e4ebfeb"
+        }
+      ],
       "buildscript": [],
       "project": [
         {
@@ -463,6 +509,36 @@
             "https://jcenter.bintray.com/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom"
           ],
           "sha256": "6d535f94efb663bdb682c9f27a50335394688009642ba7a9677504bc1be4129b"
+        },
+        {
+          "id": {
+            "group": "org.projectlombok",
+            "name": "lombok",
+            "version": "1.18.12",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "lombok-1.18.12.jar",
+          "path": "org/projectlombok/lombok/1.18.12",
+          "urls": [
+            "https://jcenter.bintray.com/org/projectlombok/lombok/1.18.12/lombok-1.18.12.jar"
+          ],
+          "sha256": "49381508ecb02b3c173368436ef71b24c0d4418ad260e6cc98becbcf4b345406"
+        },
+        {
+          "id": {
+            "group": "org.projectlombok",
+            "name": "lombok",
+            "version": "1.18.12",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "lombok-1.18.12.pom",
+          "path": "org/projectlombok/lombok/1.18.12",
+          "urls": [
+            "https://jcenter.bintray.com/org/projectlombok/lombok/1.18.12/lombok-1.18.12.pom"
+          ],
+          "sha256": "bca2bb252c6ec5db92584af7ab26f787b14a155f587c3e30ec1e1da0d4164694"
         },
         {
           "id": {
