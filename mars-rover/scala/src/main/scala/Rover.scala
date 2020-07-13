@@ -41,8 +41,9 @@ object RoverParser {
       coordinateP ~ "\n" ~
         (roverP ~ "\n" ~
           instructionP.rep(1) ~ "\n".?).rep(1) ~ End
-    ).map { res: ((Coord, Seq[(Rover, Seq[Instruction.Value])])) =>
-      Program(res._2.map(r => RoverProgram(r._1, r._2.toList)).toList)
+    ).map {
+      case (_, res) =>
+        Program(res.map(r => RoverProgram(r._1, r._2.toList)).toList)
     }
 
 }
@@ -57,18 +58,9 @@ case class Coord(x: Int, y: Int)
 
 case class RoverProgram(rover: Rover, insts: List[Instruction.Value])
 
-case class Program(rovers: List[RoverProgram])
+case class Program(programs: List[RoverProgram])
 
-class Rover(val pos: Coord, val orientation: Orientation.Value) {
-
-  override def equals(that: Any): Boolean =
-    that match {
-      case that: Rover =>
-        that.isInstanceOf[
-          Rover
-        ] && this.pos == that.pos && this.orientation == that.orientation
-      case _ => false
-    }
+case class Rover(val pos: Coord, val orientation: Orientation.Value) {
 
   def rotateLeft(): Rover = {
     val res = this.orientation match {

@@ -153,28 +153,28 @@ class RoverTest extends org.scalatest.FunSuite {
     )
   }
 
-  //test("RoverPars.programP multiple") {
-  //val Parsed.Success(r, _) =
-  //fastparse.parse(
-  //"5 5\n1 1 N\nLLLMM\n1 1 N\nLLLMM",
-  //RoverParser.programP(_)
-  //)
+  test("RoverPars.programP multiple") {
+    val Parsed.Success(r, _) =
+      fastparse.parse(
+        "5 5\n1 1 N\nLLLMM\n1 1 N\nLLLMM",
+        RoverParser.programP(_)
+      )
 
-  //val res1 = (
-  //new Rover(Coord(1, 1), Orientation.N),
-  //List(
-  //Instruction.Left,
-  //Instruction.Left,
-  //Instruction.Left,
-  //Instruction.Move,
-  //Instruction.Move
-  //)
-  //)
+    val res1 = RoverProgram(
+      new Rover(Coord(1, 1), Orientation.N),
+      List(
+        Instruction.Left,
+        Instruction.Left,
+        Instruction.Left,
+        Instruction.Move,
+        Instruction.Move
+      )
+    )
 
-  //assert(
-  //r == Program(
-  //List(res1, res1)
-  //)
-  //)
-  //}
+    assert(
+      r == Program(
+        List(res1, res1)
+      )
+    )
+  }
 }
