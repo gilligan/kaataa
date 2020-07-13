@@ -1,8 +1,20 @@
+import fastparse._
+
 object Orientation extends Enumeration {
   val N = Value("North")
   val S = Value("South")
   val E = Value("East")
   val W = Value("West")
+}
+
+object RoverParser {
+  def orientationP[_: P] =
+    P("N" | "S" | "E" | "W").!.map {
+      case "N" => Orientation.N
+      case "S" => Orientation.S
+      case "E" => Orientation.E
+      case "W" => Orientation.W
+    }
 }
 
 object Instruction extends Enumeration {
@@ -15,10 +27,12 @@ case class Coord(x: Int, y: Int)
 
 class Rover(val pos: Coord, val orientation: Orientation.Value) {
 
-  override
-  def equals(that: Any): Boolean =
+  override def equals(that: Any): Boolean =
     that match {
-      case that: Rover => that.isInstanceOf[Rover] && this.pos == that.pos && this.orientation == that.orientation
+      case that: Rover =>
+        that.isInstanceOf[
+          Rover
+        ] && this.pos == that.pos && this.orientation == that.orientation
       case _ => false
     }
 
@@ -55,12 +69,13 @@ class Rover(val pos: Coord, val orientation: Orientation.Value) {
 
   def move(inst: Instruction.Value): Rover = {
     inst match {
-      case Instruction.Left => this.rotateLeft()
+      case Instruction.Left  => this.rotateLeft()
       case Instruction.Right => this.rotateRight()
-      case Instruction.Move => this.advance()
+      case Instruction.Move  => this.advance()
     }
   }
 
-  def move(inst: List[Instruction.Value]): Rover = inst.foldLeft(this) { (res, inst) => res.move(inst) }
+  def move(inst: List[Instruction.Value]): Rover =
+    inst.foldLeft(this) { (res, inst) => res.move(inst) }
 
 }

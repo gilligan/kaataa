@@ -9,6 +9,6 @@ let
 in rec {
 
   shell = pkgs.mkShell {
-    buildInputs = with pkgs; [ metals scala sbt watch-tests ];
+    buildInputs = with pkgs; [ metals scala scalafmt sbt watch-tests ];
   };
 }
