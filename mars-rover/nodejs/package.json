@@ -1,0 +1,11 @@
+{
+  "name": "mars-rover",
+  "version": "1.0.0",
+  "description": "mars rover kata",
+  "scripts": {
+    "test": "ava"
+  },
+  "devDependencies": {
+    "ava": "^3.10.1"
+  }
+}
