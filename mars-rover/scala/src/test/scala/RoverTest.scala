@@ -178,9 +178,16 @@ class RoverTest extends org.scalatest.FunSuite {
     )
   }
 
-  test("Rover.runProgram") {
+  test("Rover.runProgram success") {
     val program = "5 5\n1 2 N\nLMLMLMLMM"
-    val expected = List(new Rover(Coord(1, 3), Orientation.N))
+    val expected = Right(List(new Rover(Coord(1, 3), Orientation.N)))
     assert(Runner.runProgram(program) == expected)
   }
+
+  test("Rover.runProgram failure") {
+    val program = "fklshjfksadhfklasdf"
+    val expected = Left("this is not helping")
+    assert(Runner.runProgram(program) == expected)
+  }
+
 }

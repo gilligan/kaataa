@@ -111,9 +111,13 @@ case class Rover(val pos: Coord, val orientation: Orientation.Value) {
 
 object Runner {
 
-  def runProgram(program: String): List[Rover] = {
-    val Parsed.Success(r, _) = fastparse.parse(program, RoverParser.programP(_))
-
-    r.programs.map(_.run)
+  def runProgram(program: String): Either[String, List[Rover]] = {
+    fastparse.parse(
+      program,
+      RoverParser.programP(_)
+    ) match {
+      case Parsed.Success(r, _) => Right(r.programs.map(_.run))
+      case _                    => Left("this is not helping")
+    }
   }
 }
