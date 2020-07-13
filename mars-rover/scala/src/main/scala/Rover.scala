@@ -56,7 +56,9 @@ object Instruction extends Enumeration {
 
 case class Coord(x: Int, y: Int)
 
-case class RoverProgram(rover: Rover, insts: List[Instruction.Value])
+case class RoverProgram(rover: Rover, insts: List[Instruction.Value]) {
+  def run(): Rover = rover.move(insts)
+}
 
 case class Program(programs: List[RoverProgram])
 
@@ -105,5 +107,13 @@ case class Rover(val pos: Coord, val orientation: Orientation.Value) {
 
   def move(inst: List[Instruction.Value]): Rover =
     inst.foldLeft(this) { _.move(_) }
+}
 
+object Runner {
+
+  def runProgram(program: String): List[Rover] = {
+    val Parsed.Success(r, _) = fastparse.parse(program, RoverParser.programP(_))
+
+    r.programs.map(_.run)
+  }
 }
