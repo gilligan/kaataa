@@ -98,4 +98,83 @@ class RoverTest extends org.scalatest.FunSuite {
     )
   }
 
+  test("RoverParser.orientationP") {
+    val Parsed.Success(n, _) = fastparse.parse("N", RoverParser.orientationP(_))
+    assert(n == Orientation.N)
+
+    val Parsed.Success(s, _) = fastparse.parse("S", RoverParser.orientationP(_))
+    assert(s == Orientation.S)
+
+    val Parsed.Success(e, _) = fastparse.parse("E", RoverParser.orientationP(_))
+    assert(e == Orientation.E)
+
+    val Parsed.Success(w, _) = fastparse.parse("W", RoverParser.orientationP(_))
+    assert(w == Orientation.W)
+  }
+
+  test("RoverPars.instructionP") {
+    val Parsed.Success(l, _) = fastparse.parse("L", RoverParser.instructionP(_))
+    assert(l == Instruction.Left)
+
+    val Parsed.Success(r, _) = fastparse.parse("R", RoverParser.instructionP(_))
+    assert(r == Instruction.Right)
+
+    val Parsed.Success(m, _) = fastparse.parse("M", RoverParser.instructionP(_))
+    assert(m == Instruction.Move)
+  }
+
+  test("RoverPars.coordinateP") {
+    val Parsed.Success(r, _) =
+      fastparse.parse("1 1", RoverParser.coordinateP(_))
+    assert(r == (Coord(1, 1)))
+  }
+
+  test("RoverPars.roverP") {
+    val Parsed.Success(r, _) =
+      fastparse.parse("1 1 N", RoverParser.roverP(_))
+    assert(r == (new Rover(Coord(1, 1), Orientation.N)))
+  }
+  test("RoverPars.programP") {
+    val Parsed.Success(r, _) =
+      fastparse.parse("5 5\n1 1 N\nLLLMM", RoverParser.programP(_))
+
+    val rprog = (RoverProgram(
+      new Rover(Coord(1, 1), Orientation.N),
+      List(
+        Instruction.Left,
+        Instruction.Left,
+        Instruction.Left,
+        Instruction.Move,
+        Instruction.Move
+      )
+    ))
+    assert(
+      r == Program(List(rprog))
+    )
+  }
+
+  //test("RoverPars.programP multiple") {
+  //val Parsed.Success(r, _) =
+  //fastparse.parse(
+  //"5 5\n1 1 N\nLLLMM\n1 1 N\nLLLMM",
+  //RoverParser.programP(_)
+  //)
+
+  //val res1 = (
+  //new Rover(Coord(1, 1), Orientation.N),
+  //List(
+  //Instruction.Left,
+  //Instruction.Left,
+  //Instruction.Left,
+  //Instruction.Move,
+  //Instruction.Move
+  //)
+  //)
+
+  //assert(
+  //r == Program(
+  //List(res1, res1)
+  //)
+  //)
+  //}
 }

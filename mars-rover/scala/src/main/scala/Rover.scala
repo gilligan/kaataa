@@ -1,4 +1,4 @@
-import fastparse._
+import fastparse._, NoWhitespace._
 
 object Orientation extends Enumeration {
   val N = Value("North")
@@ -8,6 +8,7 @@ object Orientation extends Enumeration {
 }
 
 object RoverParser {
+
   def orientationP[_: P] =
     P("N" | "S" | "E" | "W").!.map {
       case "N" => Orientation.N
@@ -15,6 +16,35 @@ object RoverParser {
       case "E" => Orientation.E
       case "W" => Orientation.W
     }
+
+  def instructionP[_: P] =
+    P("L" | "R" | "M").!.map {
+      case "L" => Instruction.Left
+      case "R" => Instruction.Right
+      case "M" => Instruction.Move
+    }
+
+  def number[_: P]: P[Int] = P(CharIn("0-9").rep(1).!.map(_.toInt))
+
+  def coordinateP[_: P] =
+    P(
+      number ~ " " ~ number
+    ).map { z: ((Int, Int)) => Coord(z._1, z._2) }
+
+  def roverP[_: P] =
+    P(
+      coordinateP ~ " " ~ orientationP
+    ).map { z: ((Coord, Orientation.Value)) => new Rover(z._1, z._2) }
+
+  def programP[_: P] =
+    P(
+      coordinateP ~ "\n" ~
+        (roverP ~ "\n" ~
+          instructionP.rep(1) ~ "\n".?).rep(1) ~ End
+    ).map { res: ((Coord, Seq[(Rover, Seq[Instruction.Value])])) =>
+      Program(res._2.map(r => RoverProgram(r._1, r._2.toList)).toList)
+    }
+
 }
 
 object Instruction extends Enumeration {
@@ -24,6 +54,10 @@ object Instruction extends Enumeration {
 }
 
 case class Coord(x: Int, y: Int)
+
+case class RoverProgram(rover: Rover, insts: List[Instruction.Value])
+
+case class Program(rovers: List[RoverProgram])
 
 class Rover(val pos: Coord, val orientation: Orientation.Value) {
 
@@ -59,12 +93,14 @@ class Rover(val pos: Coord, val orientation: Orientation.Value) {
   def advance(): Rover = {
     val p = this.pos
 
-    this.orientation match {
-      case Orientation.N => new Rover(Coord(p.x, p.y + 1), this.orientation)
-      case Orientation.E => new Rover(Coord(p.x + 1, p.y), this.orientation)
-      case Orientation.S => new Rover(Coord(p.x, p.y - 1), this.orientation)
-      case Orientation.W => new Rover(Coord(p.x - 1, p.y), this.orientation)
+    val c = this.orientation match {
+      case Orientation.N => Coord(p.x, p.y + 1)
+      case Orientation.E => Coord(p.x + 1, p.y)
+      case Orientation.S => Coord(p.x, p.y - 1)
+      case Orientation.W => Coord(p.x - 1, p.y)
     }
+
+    new Rover(c, this.orientation)
   }
 
   def move(inst: Instruction.Value): Rover = {
@@ -76,6 +112,6 @@ class Rover(val pos: Coord, val orientation: Orientation.Value) {
   }
 
   def move(inst: List[Instruction.Value]): Rover =
-    inst.foldLeft(this) { (res, inst) => res.move(inst) }
+    inst.foldLeft(this) { _.move(_) }
 
 }
