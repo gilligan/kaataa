@@ -4,3 +4,7 @@ target
 TODO
 _build
 .merlin
+.clj-kondo/
+.metals/
+.gradle
+build
