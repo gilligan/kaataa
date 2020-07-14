@@ -4,6 +4,10 @@ const r = require('./rover.js');
 const Coord = r.Coord;
 const Rover = r.Rover;
 const mkRover = r.mkRover;
+const parseRover = r.parseRover;
+const parseRoverSpec = r.parseRoverSpec;
+const parseProgram = r.parseProgram;
+const runProgram = r.runProgram;
 
 test('Create a Coord', t => {
     const c = new Coord(1,1);
@@ -73,17 +77,59 @@ test('Rover.advance', t => {
     t.true(w.advance().equals(mkRover(-1, 0, "W")));
 });
 
-test('Rover.exec', t => {
+test('Rover.exec (single)', t => {
     const n = mkRover(0, 0, "N");
     t.true(n.exec("M").equals(mkRover(0, 1, "N")));
     t.true(n.exec("L").equals(mkRover(0, 0, "W")));
     t.true(n.exec("R").equals(mkRover(0, 0, "E")));
 });
 
-test('Rover.execList', t => {
+test('Rover.exec (string)', t => {
     const n = mkRover(0, 0, "N");
-    const res = n.execList(["M", "L", "M"]);
+    const res = n.exec("MLM");
     const expected = mkRover(-1, 1, "W");
 
     t.true(res.equals(expected));
+});
+
+test('Rover.exec (list)', t => {
+    const n = mkRover(0, 0, "N");
+    const res = n.exec(["M", "L", "M"]);
+    const expected = mkRover(-1, 1, "W");
+
+    t.true(res.equals(expected));
+});
+
+test('parseRover', t => {
+    const s = "1 2 N";
+    const r = mkRover(1, 2, "N");
+
+    t.true(parseRover(s).equals(r));
+});
+
+test('parseRoverSpec', t => {
+    const spec = "1 2 N\nLMRLMR";
+    const r = mkRover(1, 2, "N");
+    const expected = { rover: r, instructions: "LMRLMR" };
+    t.deepEqual(parseRoverSpec(spec), expected);
+});
+
+test('parseProgram', t => {
+    const program = "5 5\n1 2 N\nLMRLMR\n0 0 S\nMMM";
+    const expected = [{
+        rover: mkRover(1, 2, "N"),
+        instructions: "LMRLMR"
+    }, {
+        rover: mkRover(0, 0, "S"),
+        instructions: "MMM"
+    }];
+
+    t.deepEqual(parseProgram(program), expected);
+});
+
+test('runProgram', t => {
+    const p = "5 5\n1 2 N\nLMLMLMLMM";
+    const expected = [ mkRover(1, 3, "N") ];
+
+    t.deepEqual(runProgram(p), expected);
 });
