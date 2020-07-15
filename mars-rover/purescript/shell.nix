@@ -4,4 +4,7 @@ let
 in
   pkgs.mkShell {
     buildInputs = with pkgs; [ pscid nodejs spago purescript ];
+    shellHook = ''
+      export PATH=$PATH:./node_modules/.bin
+    '';
   }
