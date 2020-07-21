@@ -8,7 +8,7 @@ import Rover
 import RoverParser
 import RoverTypes
 import Test.Hspec
-import Test.Hspec.Hedgehog ((===), Gen, assert, cover, diff, failure, forAll, hedgehog)
+import Test.Hspec.Hedgehog (Gen, assert, forAll, hedgehog)
 import Text.ParserCombinators.ReadP
 
 problem :: String
@@ -83,25 +83,30 @@ spec = do
       distance (Position (-1) (-1)) (Position (-1) (-1)) `shouldBe` 0
 
     it "parses orientation correctly" $ do
-      parse orientationReader "E" `shouldBe` Just E
-      parse orientationReader "N" `shouldBe` Just N
-      parse orientationReader "S" `shouldBe` Just S
-      parse orientationReader "W" `shouldBe` Just W
-      parse orientationReader "" `shouldBe` Nothing
-      parse orientationReader "X" `shouldBe` Nothing
+      parse orientation "E" `shouldBe` Just E
+      parse orientation "N" `shouldBe` Just N
+      parse orientation "S" `shouldBe` Just S
+      parse orientation "W" `shouldBe` Just W
+      parse orientation "" `shouldBe` Nothing
+      parse orientation "X" `shouldBe` Nothing
+
     it "parses coordinate correctly" $ do
-      parse coordinateReader "0 0" `shouldBe` Just (Position 0 0)
-      parse coordinateReader "10 10" `shouldBe` Just (Position 10 10)
-      parse coordinateReader "a b" `shouldBe` Nothing
+      parse coordinates "0 0" `shouldBe` Just (Position 0 0)
+      parse coordinates "10 10" `shouldBe` Just (Position 10 10)
+      parse coordinates "a b" `shouldBe` Nothing
+
     it "parses an instruction correctly" $ do
-      parse instructionReader "M" `shouldBe` Just IMove
-      parse instructionReader "L" `shouldBe` Just ILeft
-      parse instructionReader "R" `shouldBe` Just IRight
+      parse instruction "M" `shouldBe` Just IMove
+      parse instruction "L" `shouldBe` Just ILeft
+      parse instruction "R" `shouldBe` Just IRight
+
     it "parses a Rover correctly" $ do
-      parse parseRover "1 2 N" `shouldBe` Just (MarsRover (Position 1 2) N)
-      parse parseRover "1 X N" `shouldBe` Nothing
+      parse rover "1 2 N" `shouldBe` Just (MarsRover (Position 1 2) N)
+      parse rover "1 X N" `shouldBe` Nothing
+
     it "parses problem" $ do
-      parse problemReader problem `shouldBe` Just [(MarsRover (Position 1 2) N, [ILeft, IMove, ILeft, IMove, ILeft, IMove, ILeft, IMove, IMove])]
+      parse program problem `shouldBe` Just [(MarsRover (Position 1 2) N, [ILeft, IMove, ILeft, IMove, ILeft, IMove, ILeft, IMove, IMove])]
+
     it "moves the rover" $ do
       moveRover (MarsRover (Position 0 0) N) IMove `shouldBe` MarsRover (Position {x = 0, y = 1}) N
       moveRover (MarsRover (Position 0 0) S) IMove `shouldBe` MarsRover (Position {x = 0, y = -1}) S
@@ -120,16 +125,7 @@ spec = do
                    ]
 
     it "runs the examples" $ do
-      runRovers <$> parseProblem problem
+      runRovers <$> parseProgram problem
         `shouldBe` Just
           [ MarsRover (Position 1 3) N
           ]
-
--- * x = Rover
--- 5 5
--- 1 2 N
--- LMLMLMLMM
---
--- 3 3 E
--- MMRMMRMRRM
---

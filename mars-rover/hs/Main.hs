@@ -1,11 +1,10 @@
 module Main where
 
 import Rover (runRovers)
-import RoverParser (parseProblem)
+import RoverParser (parseProgram)
 
 main :: IO ()
-main = do
-  problem <- parseProblem <$> readFile "input.txt"
-  case problem of
-    Nothing -> putStrLn "Invalid input"
-    Just problem -> print $ runRovers problem
+main =
+  readFile "input.txt" >>= (putStrLn . maybeRun) . parseProgram
+  where
+    maybeRun = maybe "Invalid input" (show . runRovers)

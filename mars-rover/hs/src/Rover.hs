@@ -13,7 +13,7 @@ moveRover r IMove = case dir r of
   E -> moveRight r
   W -> moveLeft r
 
-runRovers :: [(Rover, [Instruction])] -> [Rover]
+runRovers :: Program -> [Rover]
 runRovers = fmap (uncurry runRover)
   where
     runRover = foldl moveRover

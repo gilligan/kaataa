@@ -3,7 +3,6 @@
 module RoverTypes where
 
 import Data.Bifunctor
-import Data.Functor
 
 data MarsRover a b = MarsRover
   { pos :: a,
@@ -13,8 +12,10 @@ data MarsRover a b = MarsRover
 
 type Rover = MarsRover Pos Orientation
 
+type Program = [(Rover, [Instruction])]
+
 instance Bifunctor MarsRover where
-  first f r@(MarsRover pos dir) = MarsRover (f pos) dir
+  first f (MarsRover p d) = MarsRover (f p) d
   second = fmap
 
 class Rotatable a where

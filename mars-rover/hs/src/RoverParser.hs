@@ -6,44 +6,37 @@ import Data.Functor
 import RoverTypes
 import Text.ParserCombinators.ReadP
 
-orientationReader :: ReadP Orientation
-orientationReader =
+orientation :: ReadP Orientation
+orientation =
   (char 'E' $> E)
     <|> (char 'N' $> N)
     <|> (char 'S' $> S)
     <|> (char 'W' $> W)
 
-coordinateReader :: ReadP Pos
-coordinateReader = Position <$> number <*> (space *> number)
+coordinates :: ReadP Pos
+coordinates = Position <$> number <*> (space *> number)
   where
     number = read <$> munch1 isDigit
     space = char ' '
 
-instructionReader :: ReadP Instruction
-instructionReader =
+instruction :: ReadP Instruction
+instruction =
   (char 'M' $> IMove)
     <|> (char 'L' $> ILeft)
     <|> (char 'R' $> IRight)
 
-parseRover :: ReadP Rover
-parseRover = MarsRover <$> coordinateReader <*> (char ' ' *> orientationReader)
+rover :: ReadP Rover
+rover = MarsRover <$> coordinates <*> (char ' ' *> orientation)
 
-problemReader :: ReadP [(Rover, [Instruction])]
-problemReader = coordinateReader >> char '\n' >> many coordAndInstr <* eof
+program :: ReadP Program
+program = coordinates >> char '\n' >> many coordAndInstr <* eof
   where
-    parseInstructions = many instructionReader
-    coordAndInstr = (,) <$> (parseRover <* char '\n') <*> (parseInstructions <* char '\n')
+    parseInstructions = many instruction
+    coordAndInstr = (,) <$> (rover <* char '\n') <*> (parseInstructions <* char '\n')
 
-parseProblem :: String -> Maybe [(Rover, [Instruction])]
-parseProblem s = case x of
+parseProgram :: String -> Maybe Program
+parseProgram s = case x of
   [(x, _)] -> Just x
   _ -> Nothing
   where
-    x = readP_to_S problemReader s
-
-parseProblem' :: String -> Maybe [(Rover, [Instruction])]
-parseProblem' s =
-  let res = readP_to_S problemReader s
-   in case res of
-        [(x, _)] -> Just x
-        _ -> Nothing
+    x = readP_to_S program s
