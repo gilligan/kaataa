@@ -1,6 +1,7 @@
 module Main where
 
-import Rover(parseProblem, runRovers)
+import Rover (runRovers)
+import RoverParser (parseProblem)
 
 main :: IO ()
 main = do
